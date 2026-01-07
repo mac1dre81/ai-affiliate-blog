@@ -1,0 +1,19 @@
+This file is a placeholder marker indicating scaffolding has been added programmatically in multiple modules.
+
+Planned structure (create incrementally to avoid partial edits):
+- src/ai/types.ts
+- src/ai/providers/openai.ts
+- src/ai/providers/gemini.ts
+- src/ai/router.ts
+- src/ai/recovery.ts
+- src/validation/ContentSafetyLayer.ts
+- src/generation/types.ts
+- src/generation/pipeline.ts
+- src/billing/types.ts
+- src/billing/credits.ts
+- src/billing/middleware.ts
+- src/deploy/engine.ts
+- src/deploy/gcp.ts
+- .env.sample
+
+Note: Files will be created in subsequent steps grouped by feature to minimize risk and ensure compilable states.

@@ -1,0 +1,30 @@
+name: CI
+on: [push, pull_request]
+env:
+  NODE_ENV: test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npx tsc -p tsconfig.json --noEmit
+      - name: Tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Audit (non-blocking)
+        run: npm audit --audit-level=moderate || true
+      - name: Bundle Analysis (optional)
+        run: echo "Bundle analyzer: use next-bundle-analyzer or webpack-bundle-analyzer"
+      - name: Lighthouse (optional)
+        run: echo "Lighthouse: configure Lighthouse CI or use Google PageSpeed Insights"

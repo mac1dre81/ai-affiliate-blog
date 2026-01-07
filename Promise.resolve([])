@@ -1,0 +1,3 @@
+// Temporary stub for database
+export const database = {
+  query: (
