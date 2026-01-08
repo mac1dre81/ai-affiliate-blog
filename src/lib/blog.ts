@@ -1,8 +1,5 @@
-import { OpenAI } from 'openai';
-import { loadEnv } from '../../env.utils';
+import { getOpenAI, ensureOpenAI } from './ai';
 import config from './env-config';
-
-let openai: OpenAI;
 
 type BlogPost = {
   slug: string;
@@ -14,18 +11,13 @@ type BlogPost = {
   keywords: string[];
   category: string;
 };
-
-async function initOpenAI() {
-  if (!openai) {
-    openai = new OpenAI({
-      apiKey: config.openai.apiKey,
-    });
-  }
-  return openai;
-}
-
 export async function generateBlogPost(topic: string, keywords: string[], category: string) {
-  const ai = await initOpenAI();
+  let ai = getOpenAI();
+  if (!ai) {
+    // Friendly runtime error; surface during request handling rather than at module load
+    // When OPENAI_API_KEY is missing, ensureOpenAI will throw with actionable guidance
+    ai = ensureOpenAI();
+  }
   
   const prompt = `
     Write a comprehensive blog post about ${topic}.
@@ -46,7 +38,7 @@ export async function generateBlogPost(topic: string, keywords: string[], catego
   `;
   
   const response = await ai.chat.completions.create({
-    model: config.openai.model,
+    model: process.env.OPENAI_MODEL || (config as any).OPENAI_MODEL || 'gpt-4o-mini',
     messages: [{ role: 'user', content: prompt }],
     temperature: 0.7,
   });
@@ -56,7 +48,7 @@ export async function generateBlogPost(topic: string, keywords: string[], catego
   // Generate a title if not provided
   const titlePrompt = `Create a catchy, SEO-friendly title for a blog post about ${topic} that includes the main keyword.`;
   const titleResponse = await ai.chat.completions.create({
-    model: config.openai.model,
+    model: process.env.OPENAI_MODEL || (config as any).OPENAI_MODEL || 'gpt-4o-mini',
     messages: [{ role: 'user', content: titlePrompt }],
     temperature: 0.7,
     max_tokens: 50,
@@ -67,7 +59,7 @@ export async function generateBlogPost(topic: string, keywords: string[], catego
   // Generate an excerpt
   const excerptPrompt = `Write a compelling 150-character excerpt for a blog post about ${topic} that will make readers want to click.`;
   const excerptResponse = await ai.chat.completions.create({
-    model: config.openai.model,
+    model: process.env.OPENAI_MODEL || (config as any).OPENAI_MODEL || 'gpt-4o-mini',
     messages: [{ role: 'user', content: excerptPrompt }],
     temperature: 0.7,
     max_tokens: 100,

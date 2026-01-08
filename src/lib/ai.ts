@@ -1,8 +1,24 @@
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export function getOpenAI(): OpenAI | null {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) return null;
+  return new OpenAI({ apiKey: key });
+}
+
+/**
+ * Ensure OpenAI is available at runtime or throw a friendly error.
+ * Call this inside request handlers where a missing key should surface as an actionable error.
+ */
+export function ensureOpenAI(): OpenAI {
+  const client = getOpenAI();
+  if (!client) {
+    throw new Error(
+      'OpenAI is not configured. Set the environment variable OPENAI_API_KEY to enable AI features. See README for setup.'
+    );
+  }
+  return client;
+}
 
 type GeneratePostOptions = {
   topic: string;
@@ -22,7 +38,8 @@ export async function generateBlogPost({
       keywords.length > 0 ? `Include these keywords: ${keywords.join(', ')}. ` : ''
     }The post should be well-structured with an introduction, main points, and conclusion.`;
 
-    const completion = await openai.chat.completions.create({
+    const client = ensureOpenAI();
+    const completion = await client.chat.completions.create({
       messages: [
         {
           role: 'system',
@@ -33,7 +50,7 @@ export async function generateBlogPost({
           content: prompt,
         },
       ],
-      model: 'gpt-4',
+      model: process.env.OPENAI_MODEL || 'gpt-4',
       temperature: 0.7,
       max_tokens: 2000,
     });
@@ -60,7 +77,8 @@ export async function generatePostMetadata(title: string, content: string) {
     - tags: An array of 3-5 relevant tags
     `;
 
-    const completion = await openai.chat.completions.create({
+    const client = ensureOpenAI();
+    const completion = await client.chat.completions.create({
       messages: [
         {
           role: 'system',
@@ -71,7 +89,7 @@ export async function generatePostMetadata(title: string, content: string) {
           content: prompt,
         },
       ],
-      model: 'gpt-3.5-turbo',
+      model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
       temperature: 0.5,
       response_format: { type: 'json_object' },
     });

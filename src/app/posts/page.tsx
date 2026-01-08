@@ -21,7 +21,8 @@ export default async function BlogPostsPage() {
   let posts: Post[] = [];
   
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`, {
+    const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://tecmarketa.com';
+    const res = await fetch(`${base}/api/posts`, {
       next: { revalidate: 60 } // Revalidate every 60 seconds
     });
     
@@ -54,18 +55,30 @@ export default async function BlogPostsPage() {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <article key={post._id} className="group">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
               <Link href={`/posts/${post.slug}`}>
                 <div className="h-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                  {post.coverImage && (
-                    <div className="h-48 overflow-hidden">
-                      <img
-                        src={DOMPurify.sanitize(post.coverImage)}
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
-                  )}
+                  {post.coverImage && (() => {
+                    const sanitizeUrl = (u?: string) => {
+                      if (!u) return undefined;
+                      try {
+                        const parsed = new URL(u);
+                        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.toString();
+                      } catch (e) {
+                        return undefined;
+                      }
+                      return undefined;
+                    };
+                    const safe = sanitizeUrl(post.coverImage);
+                    return safe ? (
+                      <div className="h-48 overflow-hidden">
+                        <img
+                          src={safe}
+                          alt={post.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    ) : null;
+                  })()}
 
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
