@@ -12,4 +12,7 @@ if (serverDsn) {
     environment: process.env.NODE_ENV,
     tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
   });
+  // Log initialization for local verification
+  // eslint-disable-next-line no-console
+  console.info(`[sentry] initialized with DSN=${serverDsn}`);
 }
