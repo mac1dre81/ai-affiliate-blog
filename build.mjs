@@ -26,7 +26,6 @@ const createPackageJson = (type) => ({
     `${dir}/package.json`,
     JSON.stringify(createPackageJson(format === 'esm' ? 'module' : 'commonjs'), 
     2
-  );
 });
 
 // 4. Copy non-TS assets

@@ -51,11 +51,13 @@ async function autoGenerateContent() {
   const postData = await generateBlogPost(topic, keywords, category);
   
   // Map featured products to post
-  const affiliateLinks = products.map(p => ({
+  const affiliateLinks = products.map((p: any) => ({
     url: p.affiliateUrl,
     title: p.name,
     description: p.description
   }));
+
+  if (!Post) throw new Error('Post model not initialized');
 
   const newPost = new Post({
     ...postData,

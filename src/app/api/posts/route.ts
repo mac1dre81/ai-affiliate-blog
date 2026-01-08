@@ -5,6 +5,7 @@ import Post from '@/models/post';
 export async function GET() {
   try {
     await connectDB(process.env.DATABASE_URL!);
+    if (!Post) throw new Error('Post model not initialized');
     const posts = await Post.find({ published: true })
       .sort({ publishedAt: -1 })
       .limit(10);
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
     await connectDB(process.env.DATABASE_URL!);
     const body = await request.json();
     
+    if (!Post) throw new Error('Post model not initialized');
     const post = new Post({
       ...body,
       publishedAt: body.published ? new Date() : null

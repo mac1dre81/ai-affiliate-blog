@@ -50,7 +50,7 @@ function readEnv(): Env {
   const NODE_ENV = (process.env.NODE_ENV as Env['NODE_ENV']) || 'development';
 
   const flags: FeatureFlags = {
-    ENABLE_OPENAI: toBool(process.env.ENABLE_OPENAI, true),
+    ENABLE_OPENAI: toBool(process.env.ENABLE_OPENAI, false),
     ENABLE_GEMINI: toBool(process.env.ENABLE_GEMINI, false),
     ENABLE_ANTHROPIC: toBool(process.env.ENABLE_ANTHROPIC, false),
     ENABLE_STRIPE: toBool(process.env.ENABLE_STRIPE, false),

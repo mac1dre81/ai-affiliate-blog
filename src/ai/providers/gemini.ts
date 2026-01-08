@@ -33,18 +33,18 @@ function buildPrompt(req: AIGenerationRequest): string {
   return `${system}\n\nOperation: ${req.operation}\n\nPrompt:\n${req.prompt}\n\nContext JSON:\n${context}\n\nReturn incremental output suitable for streaming. End with <!-- COMPLETE --> when done.`;
 }
 
-export async function generateStreamWithGemini(req: AIGenerationRequest): Promise<AIStream> {
+export async function* generateStreamWithGemini(req: AIGenerationRequest): AsyncGenerator<AIResponseChunk> {
   if (!isServer) throw new Error('Gemini adapter must run on server only');
   if (!isGeminiEnabled()) throw new Error('Gemini is disabled or not configured');
 
-  async function* errorStream(msg: string) {
-    yield { type: 'error', content: msg, done: true, provider: 'gemini', model: req.model } as AIResponseChunk;
-  }
-
   try {
     // Dynamic import so the project builds without the SDK installed
+    // @ts-ignore - google-generative-ai is optional
     const mod = await import('google-generative-ai').catch(() => null);
-    if (!mod) return errorStream('Gemini SDK not installed');
+    if (!mod) {
+      yield { type: 'error', content: 'Gemini SDK not installed', done: true, provider: 'gemini', model: req.model } as AIResponseChunk;
+      return;
+    }
 
     const { GoogleGenerativeAI } = mod as any;
     const client = new GoogleGenerativeAI(env.GOOGLE_API_KEY);
@@ -82,7 +82,7 @@ export async function generateStreamWithGemini(req: AIGenerationRequest): Promis
     yield { type: 'text', content: '<!-- COMPLETE -->', done: true, provider: 'gemini', model: req.model } as AIResponseChunk;
   } catch (error: any) {
     const message = typeof error?.message === 'string' ? error.message : 'Gemini streaming error';
-    return errorStream(message);
+    yield { type: 'error', content: message, done: true, provider: 'gemini', model: req.model } as AIResponseChunk;
   }
 }
 

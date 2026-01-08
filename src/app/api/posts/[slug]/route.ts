@@ -10,6 +10,7 @@ export async function GET(
     const params = await context.params;
     await connectDB(process.env.DATABASE_URL!);
     
+    if (!Post) throw new Error('Post model not initialized');
     const post = await Post.findOne({ slug: params.slug });
     
     if (!post) {
@@ -39,6 +40,7 @@ export async function PATCH(
     
     await connectDB(process.env.DATABASE_URL!);
     
+    if (!Post) throw new Error('Post model not initialized');
     const post = await Post.findOneAndUpdate(
       { slug: params.slug },
       { $set: data },
@@ -70,6 +72,7 @@ export async function DELETE(
     const params = await context.params;
     await connectDB(process.env.DATABASE_URL!);
     
+    if (!Post) throw new Error('Post model not initialized');
     const post = await Post.findOneAndDelete({ slug: params.slug });
     
     if (!post) {
