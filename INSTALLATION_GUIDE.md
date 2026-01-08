@@ -129,8 +129,8 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 DATABASE_URL=...
 
 # Optional but recommended
-SENTRY_DSN=https://...
-NEXT_PUBLIC_SENTRY_DSN=https://...
+SENTRY_DSN=https://...        # Can point to GlitchTip DSN (Sentry-compatible)
+NEXT_PUBLIC_SENTRY_DSN=https://...  # For client-side monitoring (optional)
 LOG_LEVEL=info
 NODE_ENV=production
 ```
@@ -146,5 +146,32 @@ NODE_ENV=production
 5. ✅ Review `PRODUCTION_HARDENING.md` for security features
 6. ✅ Review `DEPLOYMENT.md` for deployment checklist
 7. ✅ Deploy to your hosting platform
+
+---
+
+**Using GlitchTip (Sentry-compatible) instead of Sentry**
+
+- Overview: GlitchTip implements the Sentry ingestion API and can accept events from existing Sentry SDKs. This repository currently initializes the official `@sentry/nextjs` SDK in `sentry.server.config.ts` and `sentry.client.config.ts`. To send events to GlitchTip you can either use GlitchTip's hosted offering or self-host it and point the DSN at your GlitchTip instance.
+
+- Quick steps (no code changes required):
+	1. Sign up for GlitchTip hosted at `https://glitchtip.com` or self-host using their Docker images.
+	2. Create a new project in GlitchTip and copy the DSN (it looks like a Sentry DSN: `https://<key>@sentry.example.com/<project>`).
+	3. Set the environment variables in your hosting platform or `.env` files:
+
+```bash
+# Point existing Sentry SDK to GlitchTip
+SENTRY_DSN=https://<key>@glitchtip.example.com/<project>
+NEXT_PUBLIC_SENTRY_DSN=https://<key>@glitchtip.example.com/<project>
+```
+
+	4. Restart the app. The existing `@sentry/nextjs` initialization will send errors to GlitchTip via the Sentry-compatible endpoint.
+
+- Optional: If you prefer to rename environment variables to `GLITCHTIP_DSN`, update `src/lib/env-config.ts` or `sentry.*.config.ts` to read from `process.env.GLITCHTIP_DSN` and fallback to `SENTRY_DSN`.
+
+- Notes:
+	- This approach keeps all current error-capture calls (e.g., `Sentry.captureException`) unchanged.
+	- If you later decide to migrate to a different provider (Rollbar/Honeybadger), we can add a small adapter (`src/lib/error-tracker.ts`) to centralize calls and swap providers without changing application code.
+
+If you'd like, I can: add a short `src/lib/error-tracker.ts` adapter now, or update the repo to read `GLITCHTIP_DSN` as the preferred env var. Which would you prefer?
 
 See `PRODUCTION_READY.md` for complete feature summary.
