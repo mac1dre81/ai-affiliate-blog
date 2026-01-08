@@ -1,8 +1,8 @@
 // src/lib/logger.ts
-// Structured logging using pino with optional Sentry integration
+// Structured logging using pino with optional GlitchTip/Sentry integration
 
 import pino from 'pino';
-import * as Sentry from '@sentry/nextjs';
+import errorTracker from './error-tracker';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -22,9 +22,8 @@ export const logger = pino({
 
 export function logError(err: any, context?: Record<string, any>) {
   logger.error({ err, ...context }, 'Error occurred');
-  if (process.env.SENTRY_DSN) {
-    Sentry.captureException(err, { extra: context });
-  }
+  // Use the centralized error-tracker adapter instead of direct Sentry calls
+  errorTracker.captureException(err, context);
 }
 
 export function logInfo(msg: string, data?: Record<string, any>) {

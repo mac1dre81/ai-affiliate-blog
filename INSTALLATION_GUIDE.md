@@ -169,9 +169,45 @@ NEXT_PUBLIC_SENTRY_DSN=https://<key>@glitchtip.example.com/<project>
 - Optional: If you prefer to rename environment variables to `GLITCHTIP_DSN`, update `src/lib/env-config.ts` or `sentry.*.config.ts` to read from `process.env.GLITCHTIP_DSN` and fallback to `SENTRY_DSN`.
 
 - Notes:
-	- This approach keeps all current error-capture calls (e.g., `Sentry.captureException`) unchanged.
-	- If you later decide to migrate to a different provider (Rollbar/Honeybadger), we can add a small adapter (`src/lib/error-tracker.ts`) to centralize calls and swap providers without changing application code.
+  - This approach keeps all current error-capture calls (e.g., `Sentry.captureException`) unchanged.
+  - If you later decide to migrate to a different provider (Rollbar/Honeybadger), we can add a small adapter (`src/lib/error-tracker.ts`) to centralize calls and swap providers without changing application code.
 
-If you'd like, I can: add a short `src/lib/error-tracker.ts` adapter now, or update the repo to read `GLITCHTIP_DSN` as the preferred env var. Which would you prefer?
+**Verifying GlitchTip Integration**
+
+- Start your dev server with the GlitchTip DSN and enable the debug route:
+
+```powershell
+$env:GLITCHTIP_DSN='https://your-glitchtip-dsn-here'
+$env:DEBUG_ERROR_ROUTE='true'
+npm run dev
+```
+
+- You should see a console log on startup:
+  - `[sentry] initialized with DSN=https://...`
+
+- Call the test endpoint from another terminal:
+
+```powershell
+# Without secret (if DEBUG_ERROR_ROUTE_SECRET is not set):
+Invoke-RestMethod -Uri 'http://localhost:3001/api/debug/error' -TimeoutSec 10
+
+# With optional secret (if DEBUG_ERROR_ROUTE_SECRET is set):
+Invoke-RestMethod -Uri 'http://localhost:3001/api/debug/error' `
+  -Headers @{ 'x-debug-secret' = 'your-secret-here' } -TimeoutSec 10
+```
+
+- The endpoint returns HTTP 500 with:
+  - `{"ok":false,"message":"Error captured (if configured)."}`
+
+- Visit your GlitchTip project dashboard: https://app.glitchtip.com/
+  - Look for a new "Test error from /api/debug/error" event (may take a few seconds to appear).
+
+- To run a standalone test of the error-tracker adapter (no Next runtime required):
+
+```powershell
+node scripts/test-error-tracker.js
+```
+
+This will verify the adapter can capture exceptions and messages.If you'd like, I can: add a short `src/lib/error-tracker.ts` adapter now, or update the repo to read `GLITCHTIP_DSN` as the preferred env var. Which would you prefer?
 
 See `PRODUCTION_READY.md` for complete feature summary.
