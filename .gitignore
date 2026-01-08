@@ -1,8 +1,39 @@
-.env.local
-node_modules/
-.DS_Store
-.vscode/
+﻿# Environment variables
 .env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+.next/
+out/
+dist/
+build/
+
+# Cache
+.turbo/
+.eslintcache
+tsconfig.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # Snyk Security Extension - AI Rules (auto-generated)
 .github/instructions/snyk_rules.instructions.md
+
+# Vercel
+.vercel
