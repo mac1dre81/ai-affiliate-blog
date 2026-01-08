@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import errorTracker from '../../../../../../src/lib/error-tracker';
+import errorTracker from '../../../../lib/error-tracker';
 
 export async function GET() {
   const err = new Error('Test error from /api/debug/error');
