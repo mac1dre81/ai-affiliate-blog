@@ -20,19 +20,22 @@ type Post = {
 export default async function BlogPostsPage() {
   let posts: Post[] = [];
   
-  try {
-    const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://tecmarketa.com';
-    const res = await fetch(`${base}/api/posts`, {
-      next: { revalidate: 60 } // Revalidate every 60 seconds
-    });
-    
-    if (res.ok) {
-      posts = await res.json();
+  // Skip fetch during build time
+  if (process.env.NODE_ENV !== 'production' || process.env.SKIP_BUILD_FETCH !== 'true') {
+    try {
+      const base = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://tecmarketa.com';
+      const res = await fetch(`${base}/api/posts`, {
+        next: { revalidate: 60 } // Revalidate every 60 seconds
+      });
+      
+      if (res.ok) {
+        posts = await res.json();
+      }
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
     }
-  } catch (error) {
-    console.error('Failed to fetch posts:', error);
   }
-
+  
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="text-center mb-12">

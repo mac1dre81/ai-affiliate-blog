@@ -1,4 +1,4 @@
-import { generateSiteStream } from '../../src/app/api/generate-site/route';
+import { generateSiteStream } from '../../src/app/api/generate-site/generateSiteStream';
 
 // Mock the AI router to yield a few chunks
 jest.mock('../../src/ai/router', () => ({

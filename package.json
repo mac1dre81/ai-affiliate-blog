@@ -22,7 +22,7 @@
     "build:cjs": "tsc -p tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json"
   },
   "dependencies": {
-    "@sentry/nextjs": "^8.55.0",
+    "@sentry/nextjs": "^10.32.1",
     "@supabase/supabase-js": "^2.90.0",
     "autoprefixer": "^10.4.21",
     "axe-core": "^4.8.0",
@@ -34,7 +34,7 @@
     "firebase": "^12.7.0",
     "ioredis": "^5.3.2",
     "mongoose": "^9.1.2",
-    "next": "^15.4.4",
+    "next": "^15.5.9",
     "openai": "^5.23.2",
     "permissions": "^0.1.0",
     "pino": "^8.21.0",
@@ -53,6 +53,8 @@
     "@types/node": "^24.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
     "eslint-config-next": "^15.4.4",
