@@ -16,7 +16,7 @@ This document captures the deployment checklist, commands, CI example, smoke tes
   - Image optimization: ensure `next/image` usage and remote patterns in `next.config.mjs`.
 
 - **Security:**
-  - Env variables secured: ensure no secrets are committed; use platform secrets (Vercel, GitHub Actions secrets).
+  - Env variables secured: ensure no secrets are committed; use platform secrets (GitHub Actions secrets).
   - Secrets not committed: remove `.env.local` from git and rotate any exposed keys.
   - Dependency audit clean: run `npm audit` regularly.
 
@@ -83,7 +83,7 @@ Create a small script (optional) to run these checks as part of release verifica
 
 ## Rollback Procedures
 
-- Preferred: use hosting provider rollback (Vercel: promote previous deployment).
+- Preferred: use hosting provider rollback (promote previous deployment).
 - Alternative: Git revert deploy commit and re-deploy:
 
 ```powershell
@@ -124,7 +124,7 @@ Add relevant secrets to repository settings (e.g., `OPENAI_API_KEY`, `DATABASE_U
 
 - Error tracking: Sentry or similar (integrate server + client).
 - Uptime checks: UptimeRobot, Upptime, or provider built-ins.
-- Performance: Lighthouse CI and Vercel Analytics.
+- Performance: Lighthouse CI.
 
 ## Post-Deployment Validation
 
@@ -133,8 +133,8 @@ Add relevant secrets to repository settings (e.g., `OPENAI_API_KEY`, `DATABASE_U
 
 ## Contacts & Notes
 
-- Use provider docs for deployment-specific steps (Vercel, Netlify, or custom host).
-- For Next.js standalone output, verify Docker or server start commands if not using Vercel.
+- Use provider docs for deployment-specific steps (Netlify, or custom host).
+- For Next.js standalone output, verify Docker or server start commands if not using GCP Cloud Run.
 
 ---
 

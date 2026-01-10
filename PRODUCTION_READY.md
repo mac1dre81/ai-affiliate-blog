@@ -67,7 +67,7 @@ The AI affiliate blog platform is now production-ready with comprehensive securi
 - [ ] Set up GitHub Actions secrets or CI/CD secrets
 
 ### Environment Variables
-Set these in your deployment platform (Vercel, AWS, etc.):
+Set these in your deployment platform (AWS, etc.):
 
 ```bash
 # Redis

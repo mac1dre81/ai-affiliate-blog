@@ -40,7 +40,8 @@ A modern blog platform built with **Next.js 15** (App Router), featuring **auton
 - `tsc-alias`: ^1.8.7
 
 ## Build & Installation
-```bash
+```bash\
+
 # Install dependencies
 npm install
 
@@ -60,13 +61,10 @@ npm run build:full
   2. Generates a new blog post featuring products from a random category.
 - **Standalone Output**: Configured in `next.config.mjs` for optimized deployment (e.g., Docker).
 - **Environment**: Requires `OPENAI_API_KEY`, `DATABASE_URL`, and `DATABASE_NAME`.
-- **Vercel**: Configuration present in `vercel.json`.
 
 ## Testing & Validation
 **Framework**: Jest (installed but not fully configured with a `test` script).
-**Validation**: Basic endpoint checks via `scripts/smoke-test.js`.
-**Linting**: ESLint configured with Next.js defaults.
-
+**Validation**: Basic endpoint checks via `
 **Run Automation Task**:
 ```bash
 npm run automate

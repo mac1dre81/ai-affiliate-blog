@@ -149,7 +149,7 @@ Configuration:
 
 ### M9–M14: Advanced Features
 - Admin console with user/credit/deployment management.
-- Observability (Sentry, Lighthouse CI, Vercel Analytics).
+- Observability (Sentry, Lighthouse CI).
 - GDPR/CCPA compliance (consent, DSR, data export/delete).
 - Multi-language and localization support.
 - Advanced AI models (GPT-4, Claude Pro, Gemini Pro).

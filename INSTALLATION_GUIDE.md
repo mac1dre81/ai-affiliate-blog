@@ -112,7 +112,7 @@ npm start
 ## Deployment Environment
 
 The application is ready to deploy to:
-- **Vercel** (recommended for Next.js)
+- **(recommended for Next.js)
 - **AWS Amplify**
 - **Netlify**
 - **Docker/Kubernetes**

@@ -197,7 +197,7 @@ OPENAI_API_KEY=...
 - [ ] Redis instance provisioned and `REDIS_URL` set
 - [ ] Sentry project created and DSN configured
 - [ ] Stripe webhook endpoint configured with correct signing secret
-- [ ] Environment variables set in CI/CD (GitHub Actions, Vercel, etc.)
+- [ ] Environment variables set in CI/CD (GitHub Actions, etc.)
 - [ ] Health check monitored: `GET /api/health`
 - [ ] Error logs reviewed in Sentry dashboard
 - [ ] Rate limiting limits tuned for expected load
