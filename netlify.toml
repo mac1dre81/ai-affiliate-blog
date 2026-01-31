@@ -1,0 +1,51 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Next.js Runtime
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Function settings for API routes
+[functions]
+  # Increase timeout for AI generation endpoints (Pro plan: 26s, Free: 10s)
+  node_bundler = "esbuild"
+  included_files = ["node_modules/**"]
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Redirects
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Edge Functions for rate limiting (optional, requires Netlify Edge Functions)
+# [[edge_functions]]
+#   path = "/api/generate-site"
+#   function = "rate-limit"
+
+# Environment variable hints (set these in Netlify UI)
+# Required:
+# - OPENAI_API_KEY
+# - DATABASE_URL
+# - REDIS_URL (use Upstash Redis)
+# - NEXT_PUBLIC_APP_URL
+# Optional:
+# - STRIPE_SECRET_KEY
+# - STRIPE_PUBLISHABLE_KEY
+# - STRIPE_WEBHOOK_SECRET
+# - SENTRY_DSN or GLITCHTIP_DSN
+# - NEXT_PUBLIC_SENTRY_DSN or NEXT_PUBLIC_GLITCHTIP_DSN
