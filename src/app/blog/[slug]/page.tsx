@@ -1,53 +1,59 @@
-import { getBlogPosts } from '@/lib/blog';
-import { AffiliateProductCard } from '@/components/AffiliateProductCard';
-import { BlogImage } from '@/components/BlogImage';
-import Link from 'next/link';
+import { getBlogPosts } from "@/lib/blog";
+import { AffiliateProductCard } from "@/components/AffiliateProductCard";
+import { BlogImage } from "@/components/BlogImage";
+import Link from "next/link";
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPost({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const resolvedParams = await params;
   const posts = await getBlogPosts();
   const post = posts.find((p) => p.slug === resolvedParams.slug);
-  
+
   if (!post) {
     return (
       <div className="container mx-auto p-4">
         <h1 className="text-4xl font-bold mb-8">Post not found</h1>
-        <p>The blog post you're looking for doesn't exist.</p>
-        <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">
+        <p>The blog post you&apos;re looking for doesn&apos;t exist.</p>
+        <Link
+          href="/"
+          className="text-blue-600 hover:underline mt-4 inline-block"
+        >
           ← Back to home
         </Link>
       </div>
     );
   }
-  
+
   // In a real implementation, you would track views here
-  
+
   return (
     <div className="container mx-auto p-4">
-      <Link href="/" className="text-blue-600 hover:underline mb-4 inline-block">
+      <Link
+        href="/"
+        className="text-blue-600 hover:underline mb-4 inline-block"
+      >
         ← Back to home
       </Link>
-      
+
       {post.coverImage && (
-        <BlogImage 
-          src={post.coverImage} 
-          alt={post.title}
-          title={post.title}
-        />
+        <BlogImage src={post.coverImage} alt={post.title} title={post.title} />
       )}
-      
+
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
       <p className="text-gray-600 mb-8">Published on {post.publishedAt}</p>
-      
-      <div 
+
+      <div
         className="blog-content prose lg:prose-xl max-w-none"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
-      
+
       <div className="mt-12 p-6 bg-blue-50 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">Recommended Products</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {post.slug === 'best-laptops-2023' && (
+          {post.slug === "best-laptops-2023" && (
             <>
               <AffiliateProductCard
                 title="MacBook Air M2"
@@ -63,7 +69,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               />
             </>
           )}
-          {post.slug === 'smart-home-devices' && (
+          {post.slug === "smart-home-devices" && (
             <>
               <AffiliateProductCard
                 title="Amazon Echo Dot (5th Gen)"
@@ -79,7 +85,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               />
             </>
           )}
-          {post.slug === 'best-wireless-earbuds' && (
+          {post.slug === "best-wireless-earbuds" && (
             <>
               <AffiliateProductCard
                 title="Apple AirPods Pro (2nd Gen)"
@@ -97,26 +103,31 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           )}
         </div>
       </div>
-      
+
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-4">Related Posts</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {posts
-            .filter(p => p.slug !== post.slug)
+            .filter((p) => p.slug !== post.slug)
             .slice(0, 3)
-            .map(relatedPost => (
-              <div key={relatedPost.slug} className="border rounded-lg overflow-hidden shadow-md">
+            .map((relatedPost) => (
+              <div
+                key={relatedPost.slug}
+                className="border rounded-lg overflow-hidden shadow-md"
+              >
                 {relatedPost.coverImage && (
-                  <img 
-                    src={relatedPost.coverImage} 
-                    alt={relatedPost.title} 
+                  <img
+                    src={relatedPost.coverImage}
+                    alt={relatedPost.title}
                     className="w-full h-48 object-cover"
                   />
                 )}
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">{relatedPost.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    {relatedPost.title}
+                  </h3>
                   <p className="text-gray-600 mb-4">{relatedPost.excerpt}</p>
-                  <Link 
+                  <Link
                     href={`/blog/${relatedPost.slug}`}
                     className="text-blue-600 hover:underline"
                   >

@@ -16,27 +16,25 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
     },
-    "types": ["node"],
+    "types": ["node", "jest"],
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "plugins": [
       {
-        "name": "next"
-      }
-    ]
+        "name": "next",
+      },
+    ],
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/**/*"
+    "src/**/*",
   ],
-  "exclude": [
-    "node_modules"
-  ],
-  "references": []
+  "exclude": ["node_modules"],
+  "references": [],
 }
 // This file is required by Next.js and should not be removed.
 // It ensures that TypeScript is aware of the Next.js types and configuration.
