@@ -1,0 +1,23 @@
+REQUIRED LEGAL PAGES FOR YOUR AFFILIATE BLOG
+
+1. PRIVACY POLICY (/privacy)
+   Generate at: https://www.termsfeed.com/privacy-policy-generator/
+   Include: cookies, analytics, affiliate links, user data
+
+2. AFFILIATE DISCLOSURE (/disclosure) 
+   FTC REQUIREMENT - Sample text:
+   "This website contains affiliate links. We may earn a commission when 
+   you click on these links and make a purchase, at no additional cost 
+   to you. We only recommend products we genuinely believe will benefit 
+   our readers."
+
+3. TERMS OF SERVICE (/terms)
+   Generate at: https://www.termsfeed.com/terms-conditions-generator/
+   
+4. COOKIE POLICY (if serving EU users)
+   Required for GDPR compliance
+
+5. CONTACT PAGE (/contact)
+   Business email, support info
+
+Add prominent affiliate disclosures to EVERY page with affiliate links!

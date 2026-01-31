@@ -37,3 +37,6 @@ Thumbs.db
 
 # Vercel
 .vercel
+.env.local.testing
+NETLIFY_ENV_SETUP.txt
+test-glitchtip.js

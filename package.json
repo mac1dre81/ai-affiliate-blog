@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.3",
-    "@sentry/nextjs": "^10.32.1",
+    "@sentry/integrations": "^7.114.0",
+    "@sentry/nextjs": "^10.38.0",
+    "@sentry/node": "^10.38.0",
     "@supabase/supabase-js": "^2.90.0",
     "autoprefixer": "^10.4.21",
     "axe-core": "^4.8.0",
